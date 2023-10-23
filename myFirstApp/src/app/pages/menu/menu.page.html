@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>menu</ion-title>
+    <ion-button (click)="logout()" slot="end">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <!-- <ion-card (click)="menuUno()">
+      <h2>Menu 1</h2>
+    </ion-card>
+    <ion-card routerLink="/menu-dos">
+      <h2>Menu 2</h2>
+    </ion-card>
+    <ion-card (click)="menuTres()">
+      <h2>Menu 3</h2>
+    </ion-card>
+    <ion-card (click)="menuCuatro()">
+      <h2>Menu 4</h2>
+    </ion-card> -->
+
+
+    <ion-card *ngFor="let m of menuArray" [routerLink]="m.url">
+      <ion-icon [name]="m.icono "></ion-icon>
+      <h2>{{m.nombre}}</h2>
+    </ion-card>
+
+    <ion-button (click)="play()">Play</ion-button>
+    <ion-button (click)="pause()">Pause</ion-button>
+    <ion-button (click)="stop()">Stop</ion-button>
+
+    
+</ion-content>
