@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { MenuUnoPageRoutingModule } from './menu-uno-routing.module';
 
 import { MenuUnoPage } from './menu-uno.page';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MenuUnoPageRoutingModule
+    MenuUnoPageRoutingModule,
+    ZXingScannerModule
   ],
   declarations: [MenuUnoPage]
 })
-export class MenuUnoPageModule {}
+export class MenuUnoPageModule { }

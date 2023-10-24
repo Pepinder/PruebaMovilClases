@@ -1,65 +1,120 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, booleanAttribute } from '@angular/core';
 import { Comuna } from 'src/app/models/comuna';
 import { Region } from 'src/app/models/region';
 import { HelperService } from 'src/app/services/helper.service';
 import { LocationService } from 'src/app/services/location.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Preferences } from '@capacitor/preferences';
+import { PhotoService } from 'src/app/services/photo.service';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
 })
+
 export class RegistroPage implements OnInit {
-
-  usuario:string = '';
-  contrasena:string = '';
-  regiones:Region[]=[];
-  comunas:Comuna[]=[];
-  regionSel:number = 0;
-  comunaSel:number = 0;
-  seleccionComuna:boolean = true;
+  esRut: boolean = true;
+  usuario: string = '';
+  contrasena: string = '';
+  photo: string = "";
+  nombreCompleto: string = '';
+  fechaNacimiento: string = '';
+  rut: string = '';
+  carrera: string = '';
+  regiones: Region[] = [];
+  comunas: Comuna[] = [];
+  regionSel: number = 0;
+  comunaSel: number = 0;
+  seleccionComuna: boolean = true;
   constructor(
-              private storage:StorageService,
-              private helper:HelperService,
-              private locationService:LocationService
-              ) { }
+    private storage: StorageService,
+    private helper: HelperService,
+    private locationService: LocationService,
+    public photoService: PhotoService,
+    private router: Router
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.cargarRegion();
+    defineCustomElements(window);
+    this.photoService.loadSaved().then((photo) => {
+      this.photoService.photo = photo;
+    });
+
   }
 
+  addPhotoToGallery() {
+    this.photoService.addNewToGallery();
+  }
 
-  async cargarRegion(){
+  async cargarRegion() {
     const req = await this.locationService.getRegion();
     this.regiones = req.data;
   }
 
-  async cargarComuna(){
+  async cargarComuna() {
     this.seleccionComuna = false;
     const req = await this.locationService.getComuna(this.regionSel);
     this.comunas = req.data;
   }
 
 
-  registro(){
+  registro() {
     if (this.usuario == '') {
-      this.helper.showAlert("Debe ingresar un correo","Error");
+      this.helper.showAlert("Debe ingresar un correo", "Error");
       return;
     }
     if (this.contrasena == '') {
-      this.helper.showAlert("Debe ingresar una contraseña","Error");
+      this.helper.showAlert("Debe ingresar una contraseña", "Error");
+      return;
+    }
+
+    if (this.nombreCompleto === '') {
+      this.helper.showAlert("Debe ingresar su nombre completo", "Error");
+      return;
+    }
+
+    if (!this.fechaNacimiento) {
+      this.helper.showAlert("Debe seleccionar su fecha de nacimiento", "Error");
+      return;
+    }
+
+    // Realiza una validación de formato para el RUT (puedes usar una expresión regular)
+    if (!this.validarRut(this.rut)) {
+      this.helper.showAlert("El RUT ingresado no es válido", "Error");
+      return;
+    }
+
+    if (this.carrera === '') {
+      this.helper.showAlert("Debe ingresar la carrera que estudia", "Error");
       return;
     }
 
     var usuario = [{
-      correo:this.usuario,
-      contrasena:this.contrasena
+      correo: this.usuario,
+      contrasena: this.contrasena,
+      nombreCompleto: this.nombreCompleto,
+      rut: this.rut,
+      fechaNacimiento: this.fechaNacimiento,
+      carrera: this.carrera,
+      photo: this.photoService.photo
     }];
 
     this.storage.guargarUsuario(usuario);
-    this.helper.showAlert("Usuario registrado correctamente.","Información");
-    
+    this.helper.showAlert("Usuario registrado correctamente.", "Información");
+    console.log(usuario)
+    this.router.navigateByUrl("login");
   }
 
+  validarRut(rut: string): boolean {
+    // Implementa tu lógica de validación del RUT aquí, por ejemplo, usando una expresión regular.
+    // Retorna true si el RUT es válido, de lo contrario, retorna false.
+    return this.esRut
+  }
 }

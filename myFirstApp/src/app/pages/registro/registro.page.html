@@ -10,22 +10,45 @@
       <ion-card-title>Registro</ion-card-title>
       <ion-card-subtitle></ion-card-subtitle>
     </ion-card-header>
-  <div class="container">  <ion-card-content>
-    <ion-input [(ngModel)]="usuario" label="Usuario: "></ion-input>
-    <ion-input [(ngModel)]="contrasena" type="password" label="contraseña: "></ion-input>
-    <ion-item>
-      <ion-select (ionChange)="cargarComuna()" [(ngModel)]="regionSel"  label="Region" placeholder="Seleccione">
-        <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-select [disabled]="seleccionComuna" [(ngModel)]="regionSel"  label="Comuna" placeholder="Seleccione">
-        <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-button (click)="registro()" color="tertiary"  shape="round"><ion-icon slot="start" name="skull"></ion-icon> Registro </ion-button>
+    <div class="container"> <ion-card-content>
+        <h1>Datos Inicio de Sesión</h1>
+        <ion-input [(ngModel)]="usuario" label="Usuario: "></ion-input>
+        <ion-input [(ngModel)]="contrasena" type="password" label="contraseña: "></ion-input>
+        <br>
+        <h1>Datos de estudiante</h1>
+        <ion-row>
+          <ion-label>Foto estudiante </ion-label>
+          <ion-button [(ngModel)]="photo" (click)="addPhotoToGallery()" label="Foto estudiante:">
+            <ion-icon name="camera"></ion-icon>
+          </ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-col size="3">
+            <ion-img [src]="photoService.photo?.webviewPath"></ion-img>
+          </ion-col>
+        </ion-row>
 
-  </ion-card-content></div>
+        <ion-input [(ngModel)]="nombreCompleto" label="Nombre completo: "></ion-input>
+        <ion-input [(ngModel)]="rut" label="RUT"></ion-input>
+
+        <ion-datetime [(ngModel)]="fechaNacimiento" presentation="month-day-year" locale="es-ES"
+          label="Fecha de nacimiento"></ion-datetime>
+        <ion-input [(ngModel)]="carrera" label="Carrera que estudia"></ion-input>
+
+        <ion-item>
+          <ion-select (ionChange)="cargarComuna()" [(ngModel)]="regionSel" label="Region" placeholder="Seleccione">
+            <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-select [disabled]="seleccionComuna" [(ngModel)]="regionSel" label="Comuna" placeholder="Seleccione">
+            <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button (click)="registro()" color="tertiary" shape="round"><ion-icon slot="start" name="skull"></ion-icon>
+          Registro </ion-button>
+
+      </ion-card-content></div>
 
   </ion-card>
 </ion-content>
