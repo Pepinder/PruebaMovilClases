@@ -35,4 +35,9 @@ export class AuthService {
   logout() {
     localStorage.removeItem('loggedInUser');
   }
+
+  isLoggedIn(): boolean {
+    const loggedInUser = this.getLoggedInUser();
+    return !!loggedInUser;
+  }
 }

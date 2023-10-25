@@ -27,7 +27,9 @@ export class LoginPage implements OnInit {
   registro() {
     this.router.navigateByUrl("registro");
   }
-
+  recuperarContrasena(){
+    this.router.navigateByUrl("recuperar-contrasena");
+  }
   async onLogin() {
 
     if (this.correo == "") {
