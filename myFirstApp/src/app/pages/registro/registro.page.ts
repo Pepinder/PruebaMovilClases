@@ -4,13 +4,10 @@ import { Region } from 'src/app/models/region';
 import { HelperService } from 'src/app/services/helper.service';
 import { LocationService } from 'src/app/services/location.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-import { Filesystem, Directory } from '@capacitor/filesystem';
-import { Preferences } from '@capacitor/preferences';
 import { PhotoService } from 'src/app/services/photo.service';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { Router } from '@angular/router';
-
+import { UserPhoto } from 'src/app/services/photo.service';
 
 @Component({
   selector: 'app-registro',
@@ -22,7 +19,7 @@ export class RegistroPage implements OnInit {
   esRut: boolean = true;
   usuario: string = '';
   contrasena: string = '';
-  photo: string = "";
+  photo: string | undefined;
   nombreCompleto: string = '';
   fechaNacimiento: string = '';
   rut: string = '';
@@ -44,7 +41,7 @@ export class RegistroPage implements OnInit {
     this.cargarRegion();
     defineCustomElements(window);
     this.photoService.loadSaved().then((photo) => {
-      this.photoService.photo = photo;
+      this.photo = photo ? photo.webviewPath : undefined; // Asigna la foto base64 a la propiedad photo del usuario
     });
 
   }
@@ -103,7 +100,7 @@ export class RegistroPage implements OnInit {
       rut: this.rut,
       fechaNacimiento: this.fechaNacimiento,
       carrera: this.carrera,
-      photo: this.photoService.photo
+      photo: this.photo
     }];
 
     this.storage.guargarUsuario(usuario);

@@ -15,8 +15,9 @@ export class PhotoService {
   public photo: UserPhoto | undefined
   private PHOTO_STORAGE: string = 'photos';
 
+
+
   public async addNewToGallery() {
-    // Take a photo
     if ((await Camera.checkPermissions()).camera == 'granted') {
       const capturedPhoto = await Camera.getPhoto(
         {
@@ -98,6 +99,5 @@ export class PhotoService {
 export interface UserPhoto {
   filepath: string;
   webviewPath?: string;
-
 
 }

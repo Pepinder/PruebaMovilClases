@@ -4,6 +4,7 @@ import { AnimationController, IonCard } from '@ionic/angular';
 import type { Animation } from '@ionic/angular';
 import { Menu } from 'src/app/models/menu';
 import { StorageService } from 'src/app/services/storage.service';
+import { AuthService } from 'src/app/services/auth-service.service';
 
 
 @Component({
@@ -19,64 +20,48 @@ export class MenuPage implements OnInit {
 
   private animation!: Animation;
 
-
-  menuArray:Menu[]=[];
+  user: any;
+  menuArray: Menu[] = [];
 
   constructor(
-              private router:Router, 
-              private animationCtrl: AnimationController,
-              private storage:StorageService) { }
+    private router: Router,
+    private animationCtrl: AnimationController,
+    private storage: StorageService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.cargarMenu();
-    //console.log("MENU", this.menuArray);
-    console.table(this.menuArray);
-    console.error("Mi primer erorr en TS");
-    console.warn("Mi primera advertencia en TS");
-    this.cargarUsuarios();
-    console.log("Componente cargado");
+    const userEmail = this.authService.getLoggedInUser(); // Obtiene el correo del usuario actual
+    if (userEmail) {
+      this.storage.obtenerDatosUsuarioActual().then(usuario => {
+        if (usuario) {
+          this.user = usuario; // Asigna el usuario actual a la variable user
+          console.log("Bienvenido, " + usuario.nombreCompleto);
+        }
+      });
+    }
   }
 
 
-  ionViewWillEnter(){
-    console.log("Cargando la vista");
-  }
-  ionViewDidEnter(){
-    console.log("Vista cargada");
-  }
-  ionViewWillLeave(){
-    console.log("Abandonar la vista ");
-  }
-  ionViewDidLeave(){
-    console.log("ya abandonamos la vista");    
-  }
-
-
-
-
-  async cargarUsuarios(){
-    console.log("USUARIOS GUARDADOS EN STORAGE",await this.storage.obtenerUsuario());
-  }
-
-  cargarMenu(){
+  cargarMenu() {
     this.menuArray.push(
       {
-        id:1,
-        icono:"game-controller-outline",
-        nombre:"Menú uno",
-        url:"/123/menu-uno"
+        id: 1,
+        icono: "game-controller-outline",
+        nombre: "Menú uno",
+        url: "/123/menu-uno"
       },
       {
-        id:2,
-        icono:"heart-half-outline",
-        nombre:"Menú dos",
-        url:"/menu-dos"
+        id: 2,
+        icono: "heart-half-outline",
+        nombre: "Menú dos",
+        url: "/menu-dos"
       }
     )
   }
-  
 
-  
+
+
 
   ngAfterViewInit() {
     this.animation = this.animationCtrl
@@ -89,37 +74,55 @@ export class MenuPage implements OnInit {
   }
 
 
-  play(){
+  play() {
     this.animation.play();
   }
 
-  pause(){
+  pause() {
     this.animation.pause();
   }
 
-  stop(){
+  stop() {
     this.animation.stop();
   }
 
 
-  menuUno(){
+  menuUno() {
     var parametroIdEmpleado = "123456789";
     this.router.navigateByUrl(parametroIdEmpleado + "/menu-uno");
   }
 
-  menuTres(){
+  menuTres() {
     var parametroIdAsignatura = "PGY4121";
     this.router.navigateByUrl(parametroIdAsignatura + "/menu-tres");
   }
 
-  menuCuatro(){
+  menuCuatro() {
     var nota = 55;
     this.router.navigateByUrl("menu-cuatro/" + nota);
   }
 
-  logout(){
+  logout() {
+    this.authService.logout();
     this.router.navigateByUrl("login");
   }
 
+
+  loadAndConvertPhoto(photoPath: string) {
+    // Carga la foto desde la ruta del archivo (photoPath)
+    // Convierte la foto a Base64 y asigna el resultado a this.user.photo
+
+    // Ejemplo de cómo cargar y convertir una imagen desde una URL (puede variar según tu configuración)
+    const reader = new FileReader();
+    fetch(photoPath)
+      .then((response) => response.blob())
+      .then((blob) => {
+        reader.readAsDataURL(blob);
+      });
+    reader.onloadend = () => {
+      // Asigna la imagen convertida en Base64 a this.user.photo
+      this.user.photo = reader.result;
+    };
+  }
 
 }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { StoredCallback } from '@capacitor/core/types/definitions-internal';
 import { HelperService } from 'src/app/services/helper.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { AuthService } from 'src/app/services/auth-service.service';
 
 @Component({
   selector: 'app-login',
@@ -9,44 +12,52 @@ import { HelperService } from 'src/app/services/helper.service';
 })
 export class LoginPage implements OnInit {
 
-  usuario:string = "";
-  contrasena:string = "";
+  correo: string = "";
+  contrasena: string = "";
 
-  constructor(private router:Router,private helper:HelperService) { }
+  constructor(
+    private router: Router,
+    private helper: HelperService,
+    private storageService: StorageService,
+    private authService: AuthService) { }
 
   ngOnInit() {
-    console.log("El resultado de la suma es: ",this.helper.sumar(10,1));
-    
   }
 
-  registro(){
+  registro() {
     this.router.navigateByUrl("registro");
   }
 
-  onLogin(){
-/*     console.log("Usuario",this.usuario);
-    console.log("Contraseña",this.contrasena); */
+  async onLogin() {
 
-
-    if (this.usuario == "") {
+    if (this.correo == "") {
       //alert("Debe ingresar un usuario");
-      this.helper.showAlert("Debe ingresar un usuario","Error");
+      this.helper.showAlert("Debe ingresar un usuario", "Error");
       return;
     }
     if (this.contrasena == "") {
       alert("Debe ingresar una contraseña");
       return;
     }
+    // console.log(this.correo);
+    // console.log(this.contrasena);
 
-    if (this.usuario == "admin" && this.contrasena == "123") {
-      //alert("Login correcto");
-      this.router.navigateByUrl('menu');
-    }else{
-      alert("Usuario o contraseña incorrecta.")
+    const credencialesValidas = await this.storageService.validarCredenciales(
+      this.correo,
+      this.contrasena
+    );
+
+    if (credencialesValidas) {
+      console.log("Credenciales", this.correo, this.contrasena);
+      const usuario = await this.storageService.obtenerUsuario(this.correo);
+      console.log('Usuario:', usuario);
+      if (credencialesValidas) {
+        this.authService.setLoggedInUser(this.correo);
+        this.router.navigateByUrl('menu');
+      }
+    } else {
+      this.helper.showAlert("Usuario o contraseña incorrecta.", "Error");
     }
-
-    
-    
   }
 
 
