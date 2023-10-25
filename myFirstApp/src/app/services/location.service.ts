@@ -3,20 +3,23 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { ApiResponse } from '../models/apiResponse';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
 
-  async getRegion(){
+  async getRegion() {
     return await lastValueFrom(this.http.get<ApiResponse<any>>(`${environment.apiUrl}region`))
   }
 
-  async getComuna(idRegion:number){
+  async getComuna(idRegion: number) {
     return await lastValueFrom(this.http.get<ApiResponse<any>>(`${environment.apiUrl}comuna/` + idRegion))
   }
+
 }

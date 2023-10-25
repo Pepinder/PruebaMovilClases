@@ -40,11 +40,13 @@
             <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-select [disabled]="seleccionComuna" [(ngModel)]="regionSel" label="Comuna" placeholder="Seleccione">
+
+        <ion-item *ngIf="regionSel">
+          <ion-select [disabled]="seleccionComuna" [(ngModel)]="comunaSel" label="Comuna" placeholder="Seleccione">
             <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
           </ion-select>
         </ion-item>
+
         <ion-button (click)="registro()" color="tertiary" shape="round"><ion-icon slot="start" name="skull"></ion-icon>
           Registro </ion-button>
 

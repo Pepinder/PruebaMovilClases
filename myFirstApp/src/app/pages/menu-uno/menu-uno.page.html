@@ -4,10 +4,41 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>menuUno</ion-title>
+    <ion-button (click)="volver()" slot="end">VOLVER
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- <ion-button (click)="scan()">Scan</ion-button> -->
-  <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+  <ion-button (click)="scan()">Scan</ion-button>
+  <zxing-scanner (scanSuccess)="onCodeResult($event)" [enable]="isScanning"></zxing-scanner>
+  
+  <div *ngIf="qrResult">
+    <!-- Muestra el resultado del escaneo -->
+    <div *ngIf="separado.length > 0">
+      <h3>Información del escaneo:</h3>
+      <p>{{ separado[0] }}</p>
+      <p> {{ separado[1] }}</p>
+      <p> {{ separado[2] }}</p>
+      <p> {{ separado[3] }}</p>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-img [src]="user?.photo"></ion-img>
+      </ion-col>
+    </ion-row>
+    <p>Nombre de usuario: {{ user?.correo }}</p>
+    <p>Nombre de alumno: {{ user?.nombreCompleto }}</p>
+    <p>Rut de alumno: {{ user?.rut }}</p>
+    <p>Carrera de alumno: {{ user?.carrera }}</p>
+    <p>Fecha de nacimiento: {{ user?.fechaNacimiento }}</p>
+    <p>Región: {{ getNombreRegion(user.regionSel) }}</p>
+    <p>Comuna: {{ getNombreComuna(user.comunaSel) }}</p>
+
+
+
+
+    <!-- Agrega más campos según los datos que quieras mostrar -->
+  </div>
 </ion-content>

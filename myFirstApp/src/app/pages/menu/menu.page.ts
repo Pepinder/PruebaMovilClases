@@ -36,7 +36,6 @@ export class MenuPage implements OnInit {
       this.storage.obtenerDatosUsuarioActual().then(usuario => {
         if (usuario) {
           this.user = usuario[0]; // Asigna el usuario actual a la variable user
-          console.log("Bienvenido, " + usuario[0].photo);
         }
       });
     }
@@ -48,15 +47,9 @@ export class MenuPage implements OnInit {
       {
         id: 1,
         icono: "game-controller-outline",
-        nombre: "Menú uno",
+        nombre: "¡Escanea tu clase!",
         url: "/123/menu-uno"
       },
-      {
-        id: 2,
-        icono: "heart-half-outline",
-        nombre: "Menú dos",
-        url: "/menu-dos"
-      }
     )
   }
 

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BarcodeScanner } from 'capacitor-barcode-scanner';
+import { Router } from '@angular/router';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { StorageService } from 'src/app/services/storage.service';
+import { AuthService } from 'src/app/services/auth-service.service';
+import { LocationService } from 'src/app/services/location.service';
 @Component({
   selector: 'app-menu-uno',
   templateUrl: './menu-uno.page.html',
@@ -13,20 +17,50 @@ export class MenuUnoPage implements OnInit {
   parametroIdEmpleado: number | undefined;
   resultadoScan: any = '';
   isScanning: boolean = false;
+  user: any;
+  separado: string[] = [];
+  regiones: any[] = [];
+  comunas: any[] = [];
+
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private locationService: LocationService,
+    private storage: StorageService,
+    private authService: AuthService) { }
 
 
-  constructor(private activatedRoute: ActivatedRoute) { }
-
-
-  ngOnInit() {
+  async ngOnInit() {
     this.parametroIdEmpleado = this.activatedRoute.snapshot.params['idempleado'];
-    console.log("Parametro", this.parametroIdEmpleado);
+    const userEmail = this.authService.getLoggedInUser(); // Obtiene el correo del usuario actual
+    if (userEmail) {
+      this.storage.obtenerDatosUsuarioActual().then(usuario => {
+        if (usuario) {
+          this.user = usuario[0]; // Asigna el usuario actual a la variable user
+          console.log("Bienvenido, " + usuario[0].nombreCompleto);
+        }
+      });
+    }
+    const regionesResponse = await this.locationService.getRegion();
+    if (regionesResponse.success) {
+      this.regiones = regionesResponse.data;
+    }
+
+    // Cargar la lista de comunas
+    const comunasResponse = await this.locationService.getComuna(this.user.idRegion);
+    if (comunasResponse.success) {
+      this.comunas = comunasResponse.data;
+    }
+  }
+  getNombreRegion(id: number): string {
+    const region = this.regiones.find((r) => r.id === id);
+    return region ? region.nombre : 'Desconocida';
   }
 
-  /*   {
-      "nombre":"Javier",
-      "Edad":21
-    } */
+  getNombreComuna(id: number): string {
+    const comuna = this.comunas.find((c) => c.id === id);
+    return comuna ? comuna.nombre : 'Desconocida';
+  }
 
 
   async scan() {
@@ -36,5 +70,11 @@ export class MenuUnoPage implements OnInit {
   onCodeResult(result: string) {
     this.qrResult = result;
     this.isScanning = false;
+    this.separado = this.qrResult.split(',');
+
+  }
+
+  volver() {
+    this.router.navigate(['/menu']);
   }
 }

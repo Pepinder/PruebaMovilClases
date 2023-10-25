@@ -23,6 +23,8 @@ export class RegistroPage implements OnInit {
   nombreCompleto: string = '';
   fechaNacimiento: string = '';
   rut: string = '';
+  regionSeleccionada: string = '';
+  comunaSeleccionada: string = '';
   carrera: string = '';
   regiones: Region[] = [];
   comunas: Comuna[] = [];
@@ -53,12 +55,17 @@ export class RegistroPage implements OnInit {
   async cargarRegion() {
     const req = await this.locationService.getRegion();
     this.regiones = req.data;
+    const regionSeleccionada = this.regionSel;
   }
 
   async cargarComuna() {
     this.seleccionComuna = false;
     const req = await this.locationService.getComuna(this.regionSel);
     this.comunas = req.data;
+    const comunaSeleccionada = this.comunas.find(comuna => comuna.id === this.comunaSel);
+    if (comunaSeleccionada) {
+      this.comunaSeleccionada = comunaSeleccionada.nombre;
+    }
   }
 
 
@@ -100,7 +107,10 @@ export class RegistroPage implements OnInit {
       rut: this.rut,
       fechaNacimiento: this.fechaNacimiento,
       carrera: this.carrera,
-      photo: this.photo
+      photo: this.photo,
+      region: this.regionSel,
+      comuna: this.comunaSel
+
     }];
 
     this.storage.guargarUsuario(usuario);
