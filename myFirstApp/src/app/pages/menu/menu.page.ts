@@ -35,8 +35,8 @@ export class MenuPage implements OnInit {
     if (userEmail) {
       this.storage.obtenerDatosUsuarioActual().then(usuario => {
         if (usuario) {
-          this.user = usuario; // Asigna el usuario actual a la variable user
-          console.log("Bienvenido, " + usuario.nombreCompleto);
+          this.user = usuario[0]; // Asigna el usuario actual a la variable user
+          console.log("Bienvenido, " + usuario[0].photo);
         }
       });
     }

@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-row *ngIf="user"><ion-card>
-      <ion-img [src]="user?.photo?.webviewPath"></ion-img>
+      <ion-img [src]="user?.photo"></ion-img>
       <ion-card-content>
         <ion-card-title>Bienvenido, {{ user.nombreCompleto }}</ion-card-title>
       </ion-card-content>
