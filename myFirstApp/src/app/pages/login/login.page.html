@@ -1,8 +1,8 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>Login</ion-title>
   </ion-toolbar>
-</ion-header>
+  </ion-header> -->
 
 <ion-content [fullscreen]="true">
   <ion-card>
@@ -11,14 +11,13 @@
       <ion-card-subtitle></ion-card-subtitle>
     </ion-card-header>
     <div class="container"> <ion-card-content>
-        <ion-input [(ngModel)]="correo" label="Usuario: "></ion-input>
-        <ion-input [(ngModel)]="contrasena" type="password" label="contraseña: "></ion-input>
-        <ion-button (click)="onLogin()" color="tertiary" shape="round"><ion-icon slot="start" name="skull"></ion-icon>
+        <ion-input [(ngModel)]="correo" label="Usuario/Correo: "></ion-input>
+        <ion-input [(ngModel)]="contrasena" type="password" label="Contraseña: "></ion-input>
+        <ion-button (click)="onLogin()" color="light" shape="round">
           Iniciar Sesion </ion-button>
-        <ion-button (click)="registro()" color="tertiary" shape="round"><ion-icon slot="start" name="skull"></ion-icon>
+        <ion-button (click)="registro()" color="light" shape="round">
           Registro </ion-button>
-        <ion-button (click)="recuperarContrasena()" color="tertiary" shape="round"><ion-icon slot="start"
-            name="skull"></ion-icon> Recuperar Contraseña </ion-button>
+        <ion-button (click)="recuperarContrasena()" color="light" shape="round"> Recuperar Contraseña </ion-button>
 
 
       </ion-card-content></div>
