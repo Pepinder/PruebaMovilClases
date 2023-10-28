@@ -55,17 +55,15 @@ export class RegistroPage implements OnInit {
   async cargarRegion() {
     const req = await this.locationService.getRegion();
     this.regiones = req.data;
-    const regionSeleccionada = this.regionSel;
+    // const regionSeleccionada = this.regionSel;
   }
+
+  
 
   async cargarComuna() {
     this.seleccionComuna = false;
     const req = await this.locationService.getComuna(this.regionSel);
     this.comunas = req.data;
-    const comunaSeleccionada = this.comunas.find(comuna => comuna.id === this.comunaSel);
-    if (comunaSeleccionada) {
-      this.comunaSeleccionada = comunaSeleccionada.nombre;
-    }
   }
 
 
@@ -74,6 +72,7 @@ export class RegistroPage implements OnInit {
       this.helper.showAlert("Debe ingresar un correo", "Error");
       return;
     }
+
     if (this.contrasena == '') {
       this.helper.showAlert("Debe ingresar una contraseña", "Error");
       return;
@@ -89,7 +88,6 @@ export class RegistroPage implements OnInit {
       return;
     }
 
-    // Realiza una validación de formato para el RUT (puedes usar una expresión regular)
     if (!this.validarRut(this.rut)) {
       this.helper.showAlert("El RUT ingresado no es válido", "Error");
       return;
@@ -100,6 +98,18 @@ export class RegistroPage implements OnInit {
       return;
     }
 
+    const regionSeleccionada = this.regiones.find(regiones => regiones.id === this.regionSel);
+
+    if (regionSeleccionada) {
+      this.regionSeleccionada = regionSeleccionada.nombre;
+    }
+
+    const comunaSeleccionada = this.comunas.find(comuna => comuna.id === this.comunaSel);
+
+    if (comunaSeleccionada) {
+      this.comunaSeleccionada = comunaSeleccionada.nombre;
+    }
+
     var usuario = [{
       correo: this.usuario,
       contrasena: this.contrasena,
@@ -108,10 +118,11 @@ export class RegistroPage implements OnInit {
       fechaNacimiento: this.fechaNacimiento,
       carrera: this.carrera,
       photo: this.photo,
-      region: this.regionSel,
-      comuna: this.comunaSel
-
+      region: this.regionSeleccionada,
+      comuna: this.comunaSeleccionada,
     }];
+
+    console.log(this.regionSeleccionada)
 
     this.storage.guargarUsuario(usuario);
     this.helper.showAlert("Usuario registrado correctamente.", "Información");
@@ -120,8 +131,6 @@ export class RegistroPage implements OnInit {
   }
 
   validarRut(rut: string): boolean {
-    // Implementa tu lógica de validación del RUT aquí, por ejemplo, usando una expresión regular.
-    // Retorna true si el RUT es válido, de lo contrario, retorna false.
     return this.esRut
   }
 }

@@ -14,10 +14,9 @@
   <zxing-scanner (scanSuccess)="onCodeResult($event)" [enable]="isScanning"></zxing-scanner>
   
   <div *ngIf="qrResult">
-    <!-- Muestra el resultado del escaneo -->
     <div *ngIf="separado.length > 0">
       <h3>Información del escaneo:</h3>
-      <p>{{ separado[0] }}</p>
+      <p> {{ separado[0] }}</p>
       <p> {{ separado[1] }}</p>
       <p> {{ separado[2] }}</p>
       <p> {{ separado[3] }}</p>
@@ -33,12 +32,7 @@
     <p>Rut de alumno: {{ user?.rut }}</p>
     <p>Carrera de alumno: {{ user?.carrera }}</p>
     <p>Fecha de nacimiento: {{ user?.fechaNacimiento }}</p>
-    <p>Región: {{ getNombreRegion(user.regionSel) }}</p>
-    <p>Comuna: {{ getNombreComuna(user.comunaSel) }}</p>
-
-
-
-
-    <!-- Agrega más campos según los datos que quieras mostrar -->
+    <p>Región: {{ user?.regionSeleccionada }}</p>
+    <p>Comuna: {{ user?.comunaSeleccionada }}</p>
   </div>
 </ion-content>
