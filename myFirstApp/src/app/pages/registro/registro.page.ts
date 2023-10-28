@@ -8,6 +8,7 @@ import { PhotoService } from 'src/app/services/photo.service';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { Router } from '@angular/router';
 import { UserPhoto } from 'src/app/services/photo.service';
+import { Geolocation, GeolocationPosition, PositionOptions } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-registro',
@@ -133,4 +134,30 @@ export class RegistroPage implements OnInit {
   validarRut(rut: string): boolean {
     return this.esRut
   }
+
+  async getCurrentLocation() {
+    const options: PositionOptions = {
+      enableHighAccuracy: true, 
+    };
+
+    try {
+      const position: GeolocationPosition = await Geolocation.getCurrentPosition(options);
+
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      // const accuracy = position.coords.accuracy;
+
+
+      console.log('Latitude: ' + latitude);
+      console.log('Longitude: ' + longitude);
+      // console.log('Accuracy: ' + accuracy);
+
+      return { latitude, longitude };
+    } catch (error) {
+      console.error('Error al obtener la ubicación: ' + JSON.stringify(error));
+      throw error;
+      }
+    }
+
+
 }

@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'cl.vilitu.app',
+  appId: 'com.example.app',
   appName: 'myFirstApp',
   webDir: 'www',
   server: {
