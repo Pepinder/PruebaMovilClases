@@ -17,6 +17,7 @@ export class MenuUnoPage implements OnInit {
   parametroIdEmpleado: number | undefined;
   resultadoScan: any = '';
   isScanning: boolean = false;
+  usuario: any[] = [];
   user: any;
   separado: string[] = [];
   regiones: any[] = [];
@@ -29,39 +30,41 @@ export class MenuUnoPage implements OnInit {
     private storage: StorageService,
     private authService: AuthService) { }
 
-
   async ngOnInit() {
+
     this.parametroIdEmpleado = this.activatedRoute.snapshot.params['idempleado'];
-    const userEmail = this.authService.getLoggedInUser(); // Obtiene el correo del usuario actual
+
+    const userEmail = this.authService.getLoggedInUser();
+
     if (userEmail) {
       this.storage.obtenerDatosUsuarioActual().then(usuario => {
         if (usuario) {
-          this.user = usuario[0]; // Asigna el usuario actual a la variable user
+          this.user = usuario[0];
           console.log("Bienvenido, " + usuario[0].nombreCompleto);
         }
       });
     }
+
     const regionesResponse = await this.locationService.getRegion();
     if (regionesResponse.success) {
       this.regiones = regionesResponse.data;
     }
 
-    // Cargar la lista de comunas
     const comunasResponse = await this.locationService.getComuna(this.user.idRegion);
     if (comunasResponse.success) {
       this.comunas = comunasResponse.data;
     }
   }
+  
   getNombreRegion(id: number): string {
-    const region = this.regiones.find((r) => r.id === id);
-    return region ? region.nombre : 'Desconocida';
+    const region = this.regiones.find(r => r.id === id);
+    return region;
   }
 
   getNombreComuna(id: number): string {
     const comuna = this.comunas.find((c) => c.id === id);
     return comuna ? comuna.nombre : 'Desconocida';
   }
-
 
   async scan() {
     this.isScanning = true;
@@ -71,7 +74,6 @@ export class MenuUnoPage implements OnInit {
     this.qrResult = result;
     this.isScanning = false;
     this.separado = this.qrResult.split(',');
-
   }
 
   volver() {

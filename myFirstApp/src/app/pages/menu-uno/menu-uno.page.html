@@ -32,7 +32,24 @@
     <p>Rut de alumno: {{ user?.rut }}</p>
     <p>Carrera de alumno: {{ user?.carrera }}</p>
     <p>Fecha de nacimiento: {{ user?.fechaNacimiento }}</p>
-    <p>Región: {{ user?.regionSeleccionada }}</p>
-    <p>Comuna: {{ user?.comunaSeleccionada }}</p>
+    <p>Región: {{ user?.region }}</p>
+    <p>Comuna: {{ user?.comuna }}</p>
+    <p>Longitud: {{ user?.longutud }}</p> 
+    <p>Latitud: {{ user?.latitud }}</p> 
+
   </div>
+
+  <!-- <div *ngFor="let usuario of user" >
+    <p>Región: {{ usuario.nombre }}</p>
+  </div> -->
 </ion-content>
+
+<!-- <p>Nombre de usuario: {{ user?.correo }}</p>
+    <p>Nombre de alumno: {{ user?.nombreCompleto }}</p>
+    <p>Rut de alumno: {{ user?.rut }}</p>
+    <p>Carrera de alumno: {{ user?.carrera }}</p>
+    <p>Fecha de nacimiento: {{ user?.fechaNacimiento }}</p>
+    <p>Región: {{ user?.regionSeleccionada }}</p>
+    <p>Comuna: {{ user?.comunaSeleccionada }}</p> 
+    <p>Latitud: {{ lat }}</p>
+    <p>Longitud: {{ long }}</p> -->

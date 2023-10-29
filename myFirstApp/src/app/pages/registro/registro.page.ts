@@ -32,6 +32,7 @@ export class RegistroPage implements OnInit {
   regionSel: number = 0;
   comunaSel: number = 0;
   seleccionComuna: boolean = true;
+  
   constructor(
     private storage: StorageService,
     private helper: HelperService,
@@ -68,7 +69,7 @@ export class RegistroPage implements OnInit {
   }
 
 
-  registro() {
+  async registro() {
     if (this.usuario == '') {
       this.helper.showAlert("Debe ingresar un correo", "Error");
       return;
@@ -99,17 +100,21 @@ export class RegistroPage implements OnInit {
       return;
     }
 
-    const regionSeleccionada = this.regiones.find(regiones => regiones.id === this.regionSel);
+    let regionSeleccionada = this.regiones.find(regiones => regiones.id === this.regionSel);
+    var holaa = regionSeleccionada
+    console.log(holaa)
 
-    if (regionSeleccionada) {
-      this.regionSeleccionada = regionSeleccionada.nombre;
-    }
+    // if (regionSeleccionada) {
+    //   this.regionSeleccionada = regionSeleccionada.nombre;
+    // }
 
     const comunaSeleccionada = this.comunas.find(comuna => comuna.id === this.comunaSel);
 
-    if (comunaSeleccionada) {
-      this.comunaSeleccionada = comunaSeleccionada.nombre;
-    }
+    // if (comunaSeleccionada) {
+    //   this.comunaSeleccionada = comunaSeleccionada.nombre;
+    // }
+
+    const locationSel = await this.getCurrentLocation();
 
     var usuario = [{
       correo: this.usuario,
@@ -119,11 +124,11 @@ export class RegistroPage implements OnInit {
       fechaNacimiento: this.fechaNacimiento,
       carrera: this.carrera,
       photo: this.photo,
-      region: this.regionSeleccionada,
-      comuna: this.comunaSeleccionada,
+      region: regionSeleccionada?.nombre,
+      comuna: comunaSeleccionada?.nombre,
+      latitud: locationSel.latitude,
+      longitud: locationSel.longitude,
     }];
-
-    console.log(this.regionSeleccionada)
 
     this.storage.guargarUsuario(usuario);
     this.helper.showAlert("Usuario registrado correctamente.", "Información");
@@ -136,28 +141,11 @@ export class RegistroPage implements OnInit {
   }
 
   async getCurrentLocation() {
-    const options: PositionOptions = {
-      enableHighAccuracy: true, 
-    };
+    const location = await Geolocation.getCurrentPosition();
 
-    try {
-      const position: GeolocationPosition = await Geolocation.getCurrentPosition(options);
-
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      // const accuracy = position.coords.accuracy;
-
-
-      console.log('Latitude: ' + latitude);
-      console.log('Longitude: ' + longitude);
-      // console.log('Accuracy: ' + accuracy);
-
-      return { latitude, longitude };
-    } catch (error) {
-      console.error('Error al obtener la ubicación: ' + JSON.stringify(error));
-      throw error;
-      }
-    }
-
-
+    var latitude = location.coords.latitude;
+    var longitude = location.coords.longitude;
+    var data = {latitude, longitude}
+    return data 
+  }
 }
