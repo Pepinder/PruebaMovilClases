@@ -45,7 +45,7 @@ export class RegistroPage implements OnInit {
     this.cargarRegion();
     defineCustomElements(window);
     this.photoService.loadSaved().then((photo) => {
-      this.photo = photo ? photo.webviewPath : undefined; // Asigna la foto base64 a la propiedad photo del usuario
+      this.photo = photo ? photo.webviewPath : undefined;
     });
 
   }
@@ -57,7 +57,6 @@ export class RegistroPage implements OnInit {
   async cargarRegion() {
     const req = await this.locationService.getRegion();
     this.regiones = req.data;
-    // const regionSeleccionada = this.regionSel;
   }
 
   
@@ -104,15 +103,7 @@ export class RegistroPage implements OnInit {
     var holaa = regionSeleccionada
     console.log(holaa)
 
-    // if (regionSeleccionada) {
-    //   this.regionSeleccionada = regionSeleccionada.nombre;
-    // }
-
     const comunaSeleccionada = this.comunas.find(comuna => comuna.id === this.comunaSel);
-
-    // if (comunaSeleccionada) {
-    //   this.comunaSeleccionada = comunaSeleccionada.nombre;
-    // }
 
     const locationSel = await this.getCurrentLocation();
 
@@ -142,7 +133,6 @@ export class RegistroPage implements OnInit {
 
   async getCurrentLocation() {
     const location = await Geolocation.getCurrentPosition();
-
     var latitude = location.coords.latitude;
     var longitude = location.coords.longitude;
     var data = {latitude, longitude}

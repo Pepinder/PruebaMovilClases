@@ -12,12 +12,14 @@
         <ion-input [(ngModel)]="contrasena" type="password" label="contraseña: "></ion-input>
         <br>
         <h1>Datos de estudiante</h1>
+        
         <ion-row>
           <ion-label>Foto estudiante </ion-label>
           <ion-button [(ngModel)]="photo" (click)="addPhotoToGallery()" label="Foto estudiante:">
             <ion-icon name="camera"></ion-icon>
           </ion-button>
         </ion-row>
+
         <ion-row>
           <ion-col size="3">
             <ion-img [src]="photoService.photo?.webviewPath"></ion-img>
@@ -42,8 +44,6 @@
             <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
           </ion-select>
         </ion-item>
-
-        <!-- <ion-button (click)="getCurrentLocation()" color="tertiary" shape="round">Obtener Ubicación</ion-button> -->
 
         <ion-button (click)="registro()" color="tertiary" shape="round"> Registro </ion-button>
 

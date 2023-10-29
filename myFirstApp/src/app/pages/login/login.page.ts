@@ -33,7 +33,6 @@ export class LoginPage implements OnInit {
   async onLogin() {
 
     if (this.correo == "") {
-      //alert("Debe ingresar un usuario");
       this.helper.showAlert("Debe ingresar un usuario", "Error");
       return;
     }
@@ -41,8 +40,6 @@ export class LoginPage implements OnInit {
       alert("Debe ingresar una contraseña");
       return;
     }
-    // console.log(this.correo);
-    // console.log(this.contrasena);
 
     const credencialesValidas = await this.storageService.validarCredenciales(
       this.correo,
@@ -61,7 +58,4 @@ export class LoginPage implements OnInit {
       this.helper.showAlert("Usuario o contraseña incorrecta.", "Error");
     }
   }
-
-
-
 }
