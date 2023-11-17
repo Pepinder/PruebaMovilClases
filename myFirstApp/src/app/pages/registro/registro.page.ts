@@ -32,7 +32,7 @@ export class RegistroPage implements OnInit {
   regionSel: number = 0;
   comunaSel: number = 0;
   seleccionComuna: boolean = true;
-  
+
   constructor(
     private storage: StorageService,
     private helper: HelperService,
@@ -59,7 +59,7 @@ export class RegistroPage implements OnInit {
     this.regiones = req.data;
   }
 
-  
+
 
   async cargarComuna() {
     this.seleccionComuna = false;
@@ -124,7 +124,7 @@ export class RegistroPage implements OnInit {
     this.storage.guargarUsuario(usuario);
     this.helper.showAlert("Usuario registrado correctamente.", "Información");
     console.log(usuario)
-    this.router.navigateByUrl("login");
+    this.router.navigateByUrl("");
   }
 
   validarRut(rut: string): boolean {
@@ -135,7 +135,7 @@ export class RegistroPage implements OnInit {
     const location = await Geolocation.getCurrentPosition();
     var latitude = location.coords.latitude;
     var longitude = location.coords.longitude;
-    var data = {latitude, longitude}
-    return data 
+    var data = { latitude, longitude }
+    return data
   }
 }
