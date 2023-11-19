@@ -15,10 +15,14 @@ const routes: Routes = [
     pathMatch: 'full'
   },
 
-  
+
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+  },
+  {
+    path: 'registro',
+    loadChildren: () => import('./pages/registro/registro.module').then(m => m.RegistroPageModule),
   },
   {
     path: 'menu',
@@ -49,17 +53,13 @@ const routes: Routes = [
 
   },
   {
-    path: 'registro',
-    loadChildren: () => import('./pages/registro/registro.module').then(m => m.RegistroPageModule),
-  },
-  {
     path: 'camarita',
     loadChildren: () => import('./pages/camara/camara.module').then(m => m.CamaraPageModule),
     canActivate: [AuthGuard] // Corregido: canActivate dentro del objeto de configuración
   },
   {
     path: 'recuperar-contrasena',
-    loadChildren: () => import('./pages/recuperar-contrasena/recuperar-contrasena.module').then( m => m.RecuperarContrasenaPageModule)
+    loadChildren: () => import('./pages/recuperar-contrasena/recuperar-contrasena.module').then(m => m.RecuperarContrasenaPageModule)
   },
   {
     path: 'not-found',
@@ -69,7 +69,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'not-found',
     pathMatch: 'full'
-  },   
+  },
 
 ];
 

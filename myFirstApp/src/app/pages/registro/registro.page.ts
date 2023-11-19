@@ -33,7 +33,7 @@ export class RegistroPage implements OnInit {
   comunaSel: number = 0;
   seleccionComuna: boolean = true;
   mostrarBoton: boolean = false;
-  
+
   constructor(
     private storage: StorageService,
     private helper: HelperService,
@@ -108,7 +108,7 @@ export class RegistroPage implements OnInit {
       return;
     }
 
-    
+
 
     let regionSeleccionada = this.regiones.find(regiones => regiones.id === this.regionSel);
     var holaa = regionSeleccionada
@@ -132,7 +132,7 @@ export class RegistroPage implements OnInit {
       longitud: locationSel.longitude,
     }];
 
-  
+
     this.storage.guargarUsuario(usuario);
     this.helper.showAlert("Usuario registrado correctamente.", "Información");
     console.log(usuario)
@@ -148,7 +148,7 @@ export class RegistroPage implements OnInit {
   }
 
   mostrar() {
-    this.router.navigate(['/menu'])
+    window.location.reload();
     console.log('Botón mostrado');
   }
 
