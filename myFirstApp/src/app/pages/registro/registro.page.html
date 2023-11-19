@@ -12,7 +12,7 @@
         <ion-input [(ngModel)]="contrasena" type="password" label="contraseña: "></ion-input>
         <br>
         <h1>Datos de estudiante</h1>
-        
+
         <ion-row>
           <ion-label>Foto estudiante </ion-label>
           <ion-button [(ngModel)]="photo" (click)="addPhotoToGallery()" label="Foto estudiante:">
@@ -46,6 +46,8 @@
         </ion-item>
 
         <ion-button (click)="registro()" color="tertiary" shape="round"> Registro </ion-button>
+        <ion-button *ngIf="mostrarBoton" (click)="mostrar()" color="tertiary" shape="round"> Ir al menú </ion-button>
+
 
       </ion-card-content></div>
 

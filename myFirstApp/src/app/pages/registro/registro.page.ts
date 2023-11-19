@@ -32,7 +32,8 @@ export class RegistroPage implements OnInit {
   regionSel: number = 0;
   comunaSel: number = 0;
   seleccionComuna: boolean = true;
-
+  mostrarBoton: boolean = false;
+  
   constructor(
     private storage: StorageService,
     private helper: HelperService,
@@ -47,6 +48,13 @@ export class RegistroPage implements OnInit {
     this.photoService.loadSaved().then((photo) => {
       this.photo = photo ? photo.webviewPath : undefined;
     });
+
+    const datosLocalStorage = localStorage.getItem('usuario');
+
+    // Si hay algo en el localStorage, muestra el botón
+    if (datosLocalStorage) {
+      this.mostrarBoton = true;
+    }
 
   }
 
@@ -69,6 +77,7 @@ export class RegistroPage implements OnInit {
 
 
   async registro() {
+
     if (this.usuario == '') {
       this.helper.showAlert("Debe ingresar un correo", "Error");
       return;
@@ -99,6 +108,8 @@ export class RegistroPage implements OnInit {
       return;
     }
 
+    
+
     let regionSeleccionada = this.regiones.find(regiones => regiones.id === this.regionSel);
     var holaa = regionSeleccionada
     console.log(holaa)
@@ -121,10 +132,24 @@ export class RegistroPage implements OnInit {
       longitud: locationSel.longitude,
     }];
 
+  
     this.storage.guargarUsuario(usuario);
     this.helper.showAlert("Usuario registrado correctamente.", "Información");
     console.log(usuario)
-    this.router.navigateByUrl("");
+    this.router.navigateByUrl("login");
+    if (usuario) {
+      this.mostrarBoton = true;
+    } else {
+      // Al menos un campo no está lleno, ocultar el botón
+      this.mostrarBoton = false;
+    }
+
+
+  }
+
+  mostrar() {
+    this.router.navigate(['/menu'])
+    console.log('Botón mostrado');
   }
 
   validarRut(rut: string): boolean {
