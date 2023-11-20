@@ -163,4 +163,8 @@ export class RegistroPage implements OnInit {
     var data = { latitude, longitude }
     return data
   }
+
+  volver() {
+    window.location.reload();
+  }
 }
